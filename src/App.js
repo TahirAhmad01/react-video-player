@@ -1,34 +1,60 @@
-import { useState } from 'react';
-import { DefaultPlayer as Video } from 'react-html5video';
-import 'react-html5video/dist/styles.css';
+import { useState } from "react";
+import VideoPlayer from "./component/videoPlayer";
+import "../node_modules/video-react/dist/video-react.css";
 
 function App() {
-  const [fileList, setList] = useState("")
+  const [fileList, setList] = useState(null);
+  const [vidUrl, setVidUrl] = useState("");
 
   const fileSelect = (e) => {
-    const uFiles = e.target.files[0];
-      console.log(e);
-      setList(URL.createObjectURL(uFiles))
-  }
+    const uFiles = e.target.files;
+    // setList(URL.createObjectURL(uFiles))
+    setList([...uFiles]);
+  };
 
-  console.log(fileList)
+  const setLink = (id) => {
+    setVidUrl(URL.createObjectURL(fileList[id]));
+  };
+
+  console.log(vidUrl);
 
   return (
     <div className="App">
+      <div>
+        <input
+          type="file"
+          id="upload"
+          multiple
+          onChange={fileSelect}
+          accept="video/*"
+        />
+      </div>
 
-      <div><input type="file" id="upload" multiple onChange={fileSelect} accept="video/*"/> </div>
+      {fileList !== null &&
+        fileList?.map((file, idx) => {
+          const { name } = file || {};
 
-      <div>{FileList}</div>
+          return (
+            <div
+              style={{
+                border: "1px solid #ccc",
+                padding: "10px",
+                borderRadius: "5px",
+                cursor: "pointer",
+                margin: "10px",
+              }}
+              key={idx}
+              onClick={() => {
+                setLink(idx);
+              }}
+            >
+              <div>{name}</div>
+              <div>{URL.createObjectURL(file)}</div>
+            </div>
+          );
+        })}
 
-      {fileList !== "" && <Video  loop muted
-            controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-            // poster="http://sourceposter.jpg"
-            onCanPlayThrough={() => {
-                // Do stuff
-            }}>
-            <source src={fileList} type="video/webm" />
-            <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
-        </Video>}
+      <VideoPlayer vidUrl={vidUrl} />
     </div>
   );
 }
