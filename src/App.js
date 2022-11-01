@@ -1,34 +1,21 @@
+import "flowbite";
 import { useState } from "react";
-import VideoPlayer from "./component/videoPlayer";
 import "../node_modules/video-react/dist/video-react.css";
+import "./assets/css/input.css";
+import FileDragDrop from "./components/fileDragDrop";
+import VideoPlayer from "./components/videoPlayer";
 
 function App() {
   const [fileList, setList] = useState(null);
   const [vidUrl, setVidUrl] = useState("");
 
-  const fileSelect = (e) => {
-    const uFiles = e.target.files;
-    // setList(URL.createObjectURL(uFiles))
-    setList([...uFiles]);
-  };
-
   const setLink = (id) => {
     setVidUrl(URL.createObjectURL(fileList[id]));
   };
 
-  console.log(vidUrl);
-
   return (
     <div className="App">
-      <div>
-        <input
-          type="file"
-          id="upload"
-          multiple
-          onChange={fileSelect}
-          accept="video/*"
-        />
-      </div>
+      <FileDragDrop setVidList={setList} />
 
       {fileList !== null &&
         fileList?.map((file, idx) => {
@@ -47,6 +34,7 @@ function App() {
               onClick={() => {
                 setLink(idx);
               }}
+              className=" text-green-500"
             >
               <div>{name}</div>
               <div>{URL.createObjectURL(file)}</div>
