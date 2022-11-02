@@ -15,34 +15,39 @@ function App() {
 
   return (
     <div className="App">
-      <FileDragDrop setVidList={setList} />
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <VideoPlayer vidUrl={vidUrl} />
+        </div>
 
-      {fileList !== null &&
-        fileList?.map((file, idx) => {
-          const { name } = file || {};
+        <div>
+          <FileDragDrop setVidList={setList} />
+          {fileList !== null &&
+            fileList?.map((file, idx) => {
+              const { name } = file || {};
 
-          return (
-            <div
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                borderRadius: "5px",
-                cursor: "pointer",
-                margin: "10px",
-              }}
-              key={idx}
-              onClick={() => {
-                setLink(idx);
-              }}
-              className=" text-green-500"
-            >
-              <div>{name}</div>
-              <div>{URL.createObjectURL(file)}</div>
-            </div>
-          );
-        })}
-
-      <VideoPlayer vidUrl={vidUrl} />
+              return (
+                <div
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    margin: "10px",
+                  }}
+                  key={idx}
+                  onClick={() => {
+                    setLink(idx);
+                  }}
+                  className=" text-green-500"
+                >
+                  <div>{name}</div>
+                  <div>{URL.createObjectURL(file)}</div>
+                </div>
+              );
+            })}
+        </div>
+      </div>
     </div>
   );
 }
